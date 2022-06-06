@@ -51,14 +51,14 @@ struct TicTacToe3 {
 				{
 					if (grid[i][j] == grid[i][j+1])
 					{
-						return 10;
+						return 1;
 					}	
 				}
 				else if(counterX = wincond)
 				{
 					if (grid[i][j] == grid[i][j+1])
 					{
-						return -10;
+						return -1;
 					}
 					
 				}
@@ -87,14 +87,14 @@ struct TicTacToe3 {
 				{
 					if (grid[i][j] == grid[i][j])
 					{
-						return 10;
+						return 1;
 					}	
 				}
 				else if(counterX = wincond)
 				{
 					if (grid[i][j] == grid[i+1][j])
 					{
-						return -10;
+						return -1;
 					}
 					
 				}
@@ -144,7 +144,7 @@ struct TicTacToe3 {
 	
 
 
-	
+
 		// while (true) {
 		// 	player_move3(size);
 		// 	print3(size);
