@@ -4,8 +4,7 @@
 
 #define inf 3
 #define minus_inf -3
-#define P_marker 'X'
-#define C_marker 'O'
+
 
 struct move {
 	int r, c, score;
@@ -26,52 +25,46 @@ struct TicTacToe3 {
 			}
 		}
 	}
-	bool win3(int s, int w) {
+
+	int win3(int s, int w, char marker) {
 		size = s;
 		wincond = w;
-		int counter1,counter2,counter3 =  0;
+		int counterO,counterX =  0;
 		//wincond in rows
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
-				// chuong trinh khong chay qua day ma no chay qua 45 luon
-				if (grid[i][j] == P_marker)
-				{
-					counter1++;
-				}
-				else
-				{
-					counter1 = 0 ;
-				}
-				if (counter1 = wincond && grid[i][j] == grid[i][j+1])
-				{
-					return true;
-				}
-				else return false;
+		for (int i = 0; i < size-1; i++) {
+			if (grid[0][i] == 'O')
+			{
+				counterO++;
 			}
+			if (grid[0][i] == 'X')
+			{
+				counterX++;
+			}
+			if (grid[0][i] == 'O' && grid[0][i+1] == 'X')
+			{
+				counterO,counterX = 0;
+			}
+			if (counterO = wincond)
+			{
+				if (grid[i] == grid[i+1])
+				{
+					return 10;
+				}	
+			}
+			else if(counterX = wincond)
+			{
+				if (grid[i] == grid[i+1])
+				{
+					return -10;
+				}
+				
+			}
+			else return 1;
 		}
-		// wincond in columns
-		for (int i = 0; i < s; i++) {
-			for (int j = 0; j < s; j++) {
-				if (grid[i][j] == P_marker)
-				{
-					counter2 ++;
-				}
-				if (grid[i+1][j] == C_marker)
-				{
-					counter2 = 0;
-				}
-				if (counter2 = wincond && grid[i][j] == P_marker && grid[i][j] == grid[i+1][j])
-				{
-					return true;
-				}
-				else return false;
-			}
-		}			
-		// wincond in diagonals in 2 case(size%2=0 && szie%2 =1)
+	}	
 
-	}
-
-	void player_move3(int s) {
+	void player_move3(int s)
+	{
 		size = s;
 		while (true) {
 			int row, column;
@@ -82,7 +75,7 @@ struct TicTacToe3 {
 
 			if (grid[row][column] = ' ')
 			{	
-				grid[row][column] = P_marker;
+				grid[row][column] = 'O';
 				break;
 			}
 		}
@@ -90,20 +83,31 @@ struct TicTacToe3 {
 
 	void play(int s) {
 		size = s;
-		int wincond;
+		int wincond = 3;
 		Init(size);
-		std::cout << "Enter wincond:";
-		std::cin >> wincond;
-		while (true) {
-			player_move3(size);
-			print3(size);
-			if (win3(size,wincond))
+		grid= {{'O','O','O'}};
+		print3(size);
+	
+			if (win3(size,wincond,'O') == 10)
 			{
 				std::cout << "Player win !\n";
 				return;
 			}
+			else
+			{
+				std:: cout << "Computer win !\n";
+			}
+	
+		// while (true) {
+		// 	player_move3(size);
+		// 	print3(size);
+		// 	if (win3(size,wincond))
+		// 	{
+		// 		std::cout << "Player win !\n";
+		// 		return;
+		// 	}
 			
-		}
+		// }
 
 	}
 	void print3(int s) {
