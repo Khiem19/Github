@@ -26,40 +26,41 @@ struct TicTacToe3 {
 		}
 	}
 
-	int win3(std::vector<std::vector<char>> grid, int w, char marker) {
+	int win3(std::vector<std::vector<char>> grid,int s, int w, char marker) {
 		wincond = w;
+		size =s;
 		int counterO,counterX =  0;
 
 		//wincond in rows
-		for (int i = 0; i < grid.size()-1; i++)
+		for (int i = 0; i < size-2; i++)
 		{
-			for (int j = 0; j < grid.size()-1; j++) {
+			for (int j = 0; j < size-2; j++) {
 				if (grid[i][j] == 'O')
 				{
+					if (counterX != 0)
+					{
+						counterX = 0;
+					}					
 					counterO++;
 				}
 				if (grid[i][j] == 'X')
 				{
+					if (counterO != 0)
+					{
+						counterO = 0;
+					}
+					
 					counterX++;
-				}
-				if (grid[i][j] == 'O' && grid[i][j+1] == 'X')
-				{
-					counterO,counterX = 0;
 				}
 
 				if (counterO = wincond)
 				{
-					if (grid[i][j] == grid[i][j+1])
-					{
-						return 1;
-					}	
+					return 1;	
 				}
 				else if(counterX = wincond)
 				{
-					if (grid[i][j] == grid[i][j+1])
-					{
-						return -1;
-					}
+
+					return -1;
 					
 				}
 				else return 0;
@@ -67,60 +68,118 @@ struct TicTacToe3 {
 		}
 
 		//wincond in column
-		for (int i = 0; i < grid.size()-1; i++)
+		for (int j = 0; j < size-2; j++)
 		{
-			for (int j = 0; j < grid.size()-1; j++) {
+			for (int i = 0; i < size-2; i++) {
 				if (grid[i][j] == 'O')
 				{
+					if (counterX != 0)
+					{
+						counterX = 0;
+					}					
 					counterO++;
 				}
 				if (grid[i][j] == 'X')
 				{
+					if (counterO != 0)
+					{
+						counterO = 0;
+					}
+					
 					counterX++;
-				}
-				if (grid[i][j] == 'O' && grid[i+1][j] == 'X')
-				{
-					counterO,counterX = 0;
 				}
 
 				if (counterO = wincond)
 				{
-					if (grid[i][j] == grid[i][j])
-					{
-						return 1;
-					}	
+					return 1;	
 				}
 				else if(counterX = wincond)
 				{
-					if (grid[i][j] == grid[i+1][j])
-					{
-						return -1;
-					}
+
+					return -1;
 					
 				}
 				else return 0;
 			}
 		}
 
-		//wincond for diagonals (%2=0 || %2 =1)
+		//wincond in diagonals 
+		//first diagonol from top-left to bottom-right
+		for (int i = 0; i < size -2; i++)
+		{
+			for (int j = 0; j < size -2; j++)
+			{ 
+				if(i == j)
+				{
+					if (grid[i][j] == 'O')
+					{
+						if (counterX != 0)
+						{
+							counterX = 0;
+						}					
+						counterO++;
+					}
+					if (grid[i][j] == 'X')
+					{
+						if (counterO != 0)
+						{
+							counterO = 0;
+						}
+						
+						counterX++;
+					}
 
-		return 0;
-	}	
+					if (counterO = wincond)
+					{
+						return 1;	
+					}
+					else if(counterX = wincond)
+					{
 
-	void player_move3(int s)
-	{
-		size = s;
-		while (true) {
-			int row, column;
-			std::cout << "Enter an empty row : ";
-			std::cin >> row;
-			std::cout << "Enter an empty column : ";
-			std::cin >>column;
+						return -1;
+						
+					}
+					else return 0;
+				}
+			}
+		}
+		//Diagonal form top-right to bottem left
+		for (int i = 0; i < size -2; i++)
+		{
+			for (int j = 0; j < size -2; j++)
+			{ 
+				if(i + j == size-1)
+				{
+					if (grid[i][j] == 'O')
+					{
+						if (counterX != 0)
+						{
+							counterX = 0;
+						}					
+						counterO++;
+					}
+					if (grid[i][j] == 'X')
+					{
+						if (counterO != 0)
+						{
+							counterO = 0;
+						}
+						
+						counterX++;
+					}
 
-			if (grid[row][column] = ' ')
-			{	
-				grid[row][column] = 'O';
-				break;
+					if (counterO = wincond)
+					{
+						return 1;	
+					}
+					else if(counterX = wincond)
+					{
+
+						return -1;
+						
+					}
+					else return 0;
+				}
 			}
 		}
 	}
