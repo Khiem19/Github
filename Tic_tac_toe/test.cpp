@@ -26,19 +26,19 @@ struct TicTacToe3 {
 			}
 		}
 	}
-
 	bool win3(int s, int w) {
 		size = s;
 		wincond = w;
 		int counter1,counter2,counter3 =  0;
 		//wincond in rows
-		for (int i = 0; i < s; i++) {
-			for (int j = 0; j < s; j++) {
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				// chuong trinh khong chay qua day ma no chay qua 45 luon
 				if (grid[i][j] == P_marker)
 				{
 					counter1++;
 				}
-				if (grid[i][j+1] == C_marker)
+				else
 				{
 					counter1 = 0 ;
 				}
@@ -68,7 +68,7 @@ struct TicTacToe3 {
 			}
 		}			
 		// wincond in diagonals in 2 case(size%2=0 && szie%2 =1)
-		
+
 	}
 
 	void player_move3(int s) {
@@ -90,11 +90,14 @@ struct TicTacToe3 {
 
 	void play(int s) {
 		size = s;
+		int wincond;
 		Init(size);
+		std::cout << "Enter wincond:";
+		std::cin >> wincond;
 		while (true) {
 			player_move3(size);
 			print3(size);
-			if (win3(size,3))
+			if (win3(size,wincond))
 			{
 				std::cout << "Player win !\n";
 				return;
