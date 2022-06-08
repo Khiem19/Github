@@ -171,16 +171,14 @@ std::vector<std::vector<char>> player_move(std::vector<std::vector<char>> grid,c
 
 move minimax(bool maximizing_player,std::vector<std::vector<char>> grid,int wincond){
 	move best_move;
-	int game_state = win(grid,wincond);
-	int tie_state = tie(grid,wincond);
-        if (game_state != 0) {
+        if (win(grid,wincond) != 0) {
             if (maximizing_player) {
                 best_move.score = -1;
             } else {
                 best_move.score = 1;
             }
             return best_move;
-        } else if (tie_state == 0) {
+        } else if (tie(grid,wincond) == 0) {
             best_move.score = 0;
             return best_move;
         }
@@ -214,6 +212,9 @@ move minimax(bool maximizing_player,std::vector<std::vector<char>> grid,int winc
 
 std::vector<std::vector<char>> computer_move(std::vector<std::vector<char>> grid, char marker, int wincond) {
     move best_move = minimax(true,grid,wincond);
+	std::cout << best_move.r << std::endl;
+	std::cout << best_move.c << std::endl;
+	std::cout << best_move.score << std::endl;
     grid[best_move.r][best_move.c] = marker;
 	return grid;
 }
@@ -259,18 +260,9 @@ void play(std::vector<std::vector<char>> grid, int wincond){
 
 int main()
 {
- 
-        
-    std::vector<std::vector<char>> grid; /*={{'X','X','4','O','O','O'},
-                                           {'2','X','4','5','6','7'},
-                                           {'8','9','5','4','5','6'},
-                                           {'1','1','3','5','4','6'},
-                                           {'1','2','6','4','5','6'},
-                                           {'1','2','3','4','5','6'}};*/
-    
-    // cout<<check_win(grid[0],4)<<endl;
-    // std::cout<<win(grid,3)<<endl;
-	grid = Create_grid(4);
+    std::vector<std::vector<char>> grid;
+
+	grid = Create_grid(3);
 	play(grid,3);
     return 0;
 }
