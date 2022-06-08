@@ -2,7 +2,10 @@
 #include <vector>
 #include <cmath>
 
-using namespace std;
+
+struct move {
+    int r, c, score;
+};
 
 std::vector<std::vector<char>> Create_grid(int size) {
 	std::vector<std::vector<char>> grid;
@@ -132,22 +135,6 @@ void print(std::vector<std::vector<char>> grid) {
 	std::cout << '\n';
 }
 
-std::vector<std::vector<char>> player_move(std::vector<std::vector<char>> grid,char p_marker) {
-	std::cout << "Enter the empty cell:"; 
-	int cell;
-	std::cin >> cell;
-	int last_cell = pow(grid.size(),2);
-	int i = (cell -1)/grid.size(), j = (cell-1)%grid.size();
-	if(cell >= 1 && cell <= last_cell) {
-		grid[i][j] = p_marker;
-	}
-	else{
-		std:: cout << "\n Please enter the correct cell !!! \n";
-	}
-
-	return grid;
-}
-
 int tie(std::vector<std::vector<char>> grid,int wincond){
 	if(win(grid,wincond)){
 		return -1;
@@ -166,25 +153,69 @@ int tie(std::vector<std::vector<char>> grid,int wincond){
 	return 0;	
 }
 
-int minimax(std::vector<std::vector<char>> grid, char marker, int depth, int wincond){
-	int best_move = -1;
-	int best_score;
-	if (marker == 'O')
-	{
-		best_score = -10;
+std::vector<std::vector<char>> player_move(std::vector<std::vector<char>> grid,char p_marker) {
+	std::cout << "Enter the empty cell:"; 
+	int cell;
+	std::cin >> cell;
+	int last_cell = pow(grid.size(),2);
+	int i = (cell -1)/grid.size(), j = (cell-1)%grid.size();
+	if(cell >= 1 && cell <= last_cell) {
+		grid[i][j] = p_marker;
 	}
 	else{
-		best_score = 10;
-	}
-	//terminal state
-	if (depth == 0 )
-	{
-		best_score = win(grid,wincond);
-		return best_score;
+		std:: cout << "\n Please enter the correct cell !!! \n";
 	}
 
-	
-	
+	return grid;
+}
+
+move minimax(bool maximizing_player,std::vector<std::vector<char>> grid,int wincond){
+	move best_move;
+	int game_state = win(grid,wincond);
+	int tie_state = tie(grid,wincond);
+        if (game_state != 0) {
+            if (maximizing_player) {
+                best_move.score = -1;
+            } else {
+                best_move.score = 1;
+            }
+            return best_move;
+        } else if (tie_state == 0) {
+            best_move.score = 0;
+            return best_move;
+        }
+        
+        best_move.score = maximizing_player ? -2 : 2;
+        for (int i = 0; i < grid.size(); i++) {
+            for (int j = 0; j < grid.size(); j++) {
+                if (grid[i][j] == ' ') {
+                    grid[i][j] = maximizing_player ? 'X' : 'O';
+                    move board_state = minimax(!maximizing_player,grid,wincond);
+                    if (maximizing_player) {
+                        if (board_state.score > best_move.score) {
+                            best_move.score = board_state.score;
+                            best_move.r = i;
+                            best_move.c = j;
+                        }
+                    } else {
+                        if (board_state.score < best_move.score) {
+                            best_move.score = board_state.score;
+                            best_move.r = i;
+                            best_move.c = j;
+                        }
+                    }
+                    grid[i][j] = ' ';
+                }
+            }
+        }
+    return best_move;
+
+}
+
+std::vector<std::vector<char>> computer_move(std::vector<std::vector<char>> grid, char marker, int wincond) {
+    move best_move = minimax(true,grid,wincond);
+    grid[best_move.r][best_move.c] = marker;
+	return grid;
 }
 
 void play(std::vector<std::vector<char>> grid, int wincond){
@@ -197,6 +228,12 @@ void play(std::vector<std::vector<char>> grid, int wincond){
 		}
 	}
 	computer = player =='X' ? 'O' : 'X';
+	if (player == 'O')
+	{	
+		std:: cout <<1;
+		grid = computer_move(grid,computer,wincond);
+		std:: cout <<2;
+	}
 	print(grid);
 	while(!win(grid,wincond)){
 		grid = player_move(grid,player);
@@ -213,6 +250,9 @@ void play(std::vector<std::vector<char>> grid, int wincond){
 		if(tie_state == 0){
 			std::cout << "Game is tied" << std::endl;
 		}
+		std::cout << "Computer is making a move..\n";
+		grid = computer_move(grid,computer,wincond);
+		print(grid);
 	}
 }
 
@@ -231,6 +271,6 @@ int main()
     // cout<<check_win(grid[0],4)<<endl;
     // std::cout<<win(grid,3)<<endl;
 	grid = Create_grid(4);
-	play(grid,4);
+	play(grid,3);
     return 0;
 }
